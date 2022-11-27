@@ -4,7 +4,7 @@ import './index.css';
 
 function Square(props) {    
     return (
-        <button className="square" onClick={props.onClick}>
+        <button className={'square' + (props.winner ? ' winner' : '')} onClick={props.onClick}>
             {props.value}
         </button>
     );
@@ -13,7 +13,9 @@ function Square(props) {
   class Board extends React.Component {
     renderSquare(i) {
         return (
-            <Square 
+            <Square
+                key={i}
+                winner={this.props.winner && this.props.winner.indexOf(i) != -1 ? true : false}
                 value={this.props.squares[i]} 
                 onClick={() => this.props.onClick(i)}
             />
@@ -21,23 +23,17 @@ function Square(props) {
     }
   
     render() {
+        const squares = [];
+        for (let i = 0; i < 3; i++) {
+            const row = [];
+            for (let j = 0; j < 3; j++) {
+                row.push(this.renderSquare(j + 3 * i));
+            }
+            squares.push(<div key={i} className="board-row">{row}</div>)
+        }
         return (
             <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
+                {squares}
             </div>
         );
     }
@@ -89,7 +85,7 @@ function Square(props) {
         const moves = history.map((step, move) => {
             const desc = move ? 'Go to move #' + move : 'Go to start';
             const pos = move ? 
-                '(' + (step.currentStep % 3 + 1) + ', ' + (Math.floor(step.currentStep / 3) + 1) + ')' : 
+                '(' + (step.currentStep % 3 + 1) + ', ' + (Math.floor(step.currentStep / 3) + 1) + ')' + step.currentStep + ' ' + move: 
                 null;
             const selected = move == this.state.stepNumber ? 'selected' : null;
             return (
@@ -101,7 +97,7 @@ function Square(props) {
 
         let status;
         if (winner) {
-            status = 'Winner ' + winner; 
+            status = 'Winner ' + this.state.history[this.state.stepNumber].squares[winner[0]]; 
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
@@ -111,7 +107,8 @@ function Square(props) {
           <div className="game-board">
             <Board
                 squares={current.squares}
-                onClick={(i) => this.handleClick(i)} 
+                winner={winner}
+                onClick={(i) => this.handleClick(i)}
             />
           </div>
           <div className="game-info">
@@ -142,7 +139,7 @@ function Square(props) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+            return lines[i];
         }
     }
     return null;

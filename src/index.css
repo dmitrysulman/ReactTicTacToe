@@ -52,3 +52,7 @@ body {
   .selected button {
     background-color: beige;
   }
+
+  .square.winner {
+    background-color: beige;
+  }
