@@ -49,6 +49,7 @@ function Square(props) {
         this.state = {
             history: [{
                 squares: Array(9).fill(null),
+                currentStep: null,
             }],
             xIsNext: true,
             stepNumber: 0,
@@ -66,6 +67,7 @@ function Square(props) {
         this.setState({
             history: history.concat([{
                 squares: squares,
+                currentStep: i,
             }]),
             xIsNext: !this.state.xIsNext,
             stepNumber: history.length,
@@ -86,9 +88,10 @@ function Square(props) {
 
         const moves = history.map((step, move) => {
             const desc = move ? "Go to move #" + move : "Go to start";
+            const pos = move ? "(" + (step.currentStep % 3 + 1) + ", " + (Math.floor(step.currentStep / 3) + 1) + ")" : null;
             return (
                 <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                    <button onClick={() => this.jumpTo(move)}>{desc} {pos}</button>
                 </li>
             );
         });
