@@ -85,7 +85,7 @@ function Square(props) {
         const moves = history.map((step, move) => {
             const desc = move ? 'Go to move #' + move : 'Go to start';
             const pos = move ? 
-                '(' + (step.currentStep % 3 + 1) + ', ' + (Math.floor(step.currentStep / 3) + 1) + ')' + step.currentStep + ' ' + move: 
+                '(' + (step.currentStep % 3 + 1) + ', ' + (Math.floor(step.currentStep / 3) + 1) + ')' : 
                 null;
             const selected = move === this.state.stepNumber ? 'selected' : null;
             return (
