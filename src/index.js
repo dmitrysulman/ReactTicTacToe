@@ -15,7 +15,7 @@ function Square(props) {
         return (
             <Square
                 key={i}
-                winner={this.props.winner && this.props.winner.indexOf(i) != -1 ? true : false}
+                winner={this.props.winner && this.props.winner.indexOf(i) !== -1 ? true : false}
                 value={this.props.squares[i]} 
                 onClick={() => this.props.onClick(i)}
             />
@@ -73,7 +73,7 @@ function Square(props) {
     jumpTo(step) {
         this.setState({
             stepNumber: step,
-            xIsNext: (step % 2) == 0,
+            xIsNext: (step % 2) === 0,
         });
     }
 
@@ -87,7 +87,7 @@ function Square(props) {
             const pos = move ? 
                 '(' + (step.currentStep % 3 + 1) + ', ' + (Math.floor(step.currentStep / 3) + 1) + ')' + step.currentStep + ' ' + move: 
                 null;
-            const selected = move == this.state.stepNumber ? 'selected' : null;
+            const selected = move === this.state.stepNumber ? 'selected' : null;
             return (
                 <li key={move} className={selected}>
                     <button onClick={() => this.jumpTo(move)}>{desc} {pos}</button>
